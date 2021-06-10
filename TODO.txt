@@ -1,0 +1,5 @@
+Components for difficulty select, mine counter and restart button.
+
+Show incorrectly placed flags on game over.
+
+CSS and markup improvements.

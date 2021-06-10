@@ -1,0 +1,66 @@
+.minesweeper {
+    text-align: center;
+}
+
+button {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    padding: 0;
+    background-color: #d6d6d6;
+    border-color: white;
+}
+
+span {
+    position: relative;
+    bottom: 2px;
+}
+
+.revealed {
+    background-color: #e3e3e3;
+    border-style: inset;
+}
+
+.revealed-mine {
+    background-color: red;
+}
+
+.zero {
+    font-weight: bold;
+    color: indigo;
+}
+.one {
+    font-weight: bold;
+    color: blue;
+}
+
+.two {
+    font-weight: bold;
+    color: green;
+}
+.three {
+    font-weight: bold;
+    color: red;
+}
+.four {
+    font-weight: bold;
+    color: darkblue;
+}
+.five {
+    font-weight: bold;
+    color: brown;
+}
+.six {
+    font-weight: bold;
+    color: darkcyan;
+}
+.seven {
+    font-weight: bold;
+    color: black;
+}
+.eight {
+    font-weight: bold;
+    color: grey;
+}
+div {
+}
