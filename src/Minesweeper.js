@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Minesweeper.css';
 
 const GAME_ONGOING = 0;
@@ -14,11 +14,15 @@ function Minesweeper(props) {
   const [flags, setFlags] = useState([]);
   const [mines, setMines] = useState([]);
   const [revealed, setRevealed] = useState([]);
-  
+  const [startTime, setStartTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
   function resetState() {
     setFlags([]);
     setMines([]);
     setRevealed([]);
+    setStartTime(Date.now());
+    setCurrentTime(Date.now());
   }
   
   function handleCellClick(x, y) {
@@ -62,12 +66,11 @@ function Minesweeper(props) {
   }
   
 
-  function renderButton(x, y) {
+  function renderButton(x, y, gameState) {
     const current = new Coordinate(x, y);
     const isMine = containsCoordinate(current, mines);
     const isRevealed = containsCoordinate(current, revealed);
     const isFlagged = containsCoordinate(current, flags);
-    const gameState = checkGameOver();
 
     if (isRevealed && !isMine) {
       const cellNumber = adjacentIn(width, height, current, mines).length;
@@ -95,22 +98,42 @@ function Minesweeper(props) {
     }
     return GAME_ONGOING;
   }
+  
+  const gameState = checkGameOver();
 
   for (let y = 0; y < height; y++) {
     const cells = [];
     for (let x = 0; x < width; x++) {
       //cells.push(<button onClick={newCoordAlerter(x, y)}>{x}</button>);
-      cells.push(renderButton(x, y));
+      cells.push(renderButton(x, y, gameState));
     }
     rows.push(<div className="row">{cells}</div>);
   }
 
   return (
     <div className="minesweeper" onContextMenu={(e) => {e.preventDefault();e.stopPropagation();}}>
-      <p>Bombs: {bombCount - flags.length}</p>
-      <p onClick={resetState}>Game status: {checkGameOver()}</p>
+      <div className="minesweeper-header">
+        <span className="bomb-counter">{bombCount - flags.length}</span>
+        <button onClick={resetState}>Game status: {gameState}</button>
+        <Timer callback={() => setCurrentTime(Date.now())}
+               running={gameState === GAME_ONGOING} 
+               secondsElapsed={Math.floor((currentTime - startTime) / 1000)} />
+      </div>
       {rows}
     </div>
+  );
+}
+
+function Timer(props) {
+  useEffect(() => {
+    if (props.running) {
+      const id = setInterval(props.callback, 1000);
+      return (() => clearInterval(id));
+    }
+  }, [props.running]);
+
+  return (
+    <span className="timer">{props.secondsElapsed}</span>
   );
 }
 
