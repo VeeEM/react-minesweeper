@@ -75,15 +75,15 @@ function Minesweeper(props) {
     if (isRevealed && !isMine) {
       const cellNumber = adjacentIn(width, height, current, mines).length;
       const numberClass = numberToClass(cellNumber);
-      return <button className={numberClass + ' revealed'} onMouseUp={handleCellClick(x, y)}>{cellNumber > 0 ? cellNumber : ''}</button>;
+      return <button className={"cell-button " + numberClass + ' revealed'} onMouseUp={handleCellClick(x, y)}>{cellNumber > 0 ? cellNumber : ''}</button>;
     } else if (isRevealed && isMine) {
-      return <button className="revealed-mine" onMouseUp={handleCellClick(x, y)}><span>💣</span></button>;
+      return <button className="cell-button revealed-mine" onMouseUp={handleCellClick(x, y)}><span className="cell-span">💣</span></button>;
     } else if (!isRevealed && isMine && gameState === GAME_LOSS) {
-      return <button onMouseUp={handleCellClick(x, y)}><span>💣</span></button>;
+      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">💣</span></button>;
     } else if (!isRevealed && !isFlagged) {
-      return <button onMouseUp={handleCellClick(x, y)}>{" "}</button>;
+      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}>{" "}</button>;
     } else if (!isRevealed && isFlagged) {
-      return <button onMouseUp={handleCellClick(x, y)}><span>🚩</span></button>;
+      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">🚩</span></button>;
     }
   }
 
@@ -113,8 +113,8 @@ function Minesweeper(props) {
   return (
     <div className="minesweeper" onContextMenu={(e) => {e.preventDefault();e.stopPropagation();}}>
       <div className="minesweeper-header">
-        <span className="bomb-counter">{bombCount - flags.length}</span>
-        <button onClick={resetState}>Game status: {gameState}</button>
+        <span className="header-span bomb-counter">{bombCount - flags.length}</span>
+        <ResetButton onClick={resetState} gameState={gameState} />
         <Timer callback={() => setCurrentTime(Date.now())}
                running={gameState === GAME_ONGOING} 
                secondsElapsed={Math.floor((currentTime - startTime) / 1000)} />
@@ -133,7 +133,22 @@ function Timer(props) {
   }, [props.running]);
 
   return (
-    <span className="timer">{props.secondsElapsed}</span>
+    <span className="header-span timer">{props.secondsElapsed}</span>
+  );
+}
+
+function ResetButton(props) {
+  let content = "";
+  if (props.gameState === GAME_LOSS) {
+    content = "😭";
+  } else if (props.gameState === GAME_ONGOING) {
+    content = "🙂";
+  } else if (props.gameState === GAME_WIN) {
+    content = "🥳";
+  }
+
+  return (
+    <button className="reset-button" onClick={props.onClick}>{content}</button>
   );
 }
 

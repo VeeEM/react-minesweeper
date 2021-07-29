@@ -1,8 +1,18 @@
 .minesweeper {
     text-align: center;
+    width: 600px;
 }
 
-button {
+.minesweeper-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    height: 50px;
+    background-color: #d6d6d6;
+    border-style: ridge;
+}
+
+.cell-button {
     width: 20px;
     height: 20px;
     vertical-align: top;
@@ -11,9 +21,24 @@ button {
     border-color: white;
 }
 
-span {
+.reset-button {
+    width: 40px;
+    height: 40px;
+    background-color: #d6d6d6;
+    border-color: white;
+    padding: 0;
+    font-size: 24px;
+}
+
+.cell-span {
     position: relative;
     bottom: 2px;
+}
+
+.header-span {
+    font-size: 30px;
+    font-family: arial;
+    width: 100px;
 }
 
 .revealed {
@@ -38,29 +63,33 @@ span {
     font-weight: bold;
     color: green;
 }
+
 .three {
     font-weight: bold;
     color: red;
 }
+
 .four {
     font-weight: bold;
     color: darkblue;
 }
+
 .five {
     font-weight: bold;
     color: brown;
 }
+
 .six {
     font-weight: bold;
     color: darkcyan;
 }
+
 .seven {
     font-weight: bold;
     color: black;
 }
+
 .eight {
     font-weight: bold;
     color: grey;
-}
-div {
 }
