@@ -82,6 +82,8 @@ function Minesweeper(props) {
       return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">💣</span></button>;
     } else if (!isRevealed && !isFlagged) {
       return <button className="cell-button" onMouseUp={handleCellClick(x, y)}>{" "}</button>;
+    } else if (isFlagged && !isMine && gameState === GAME_LOSS) {
+      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">❌</span></button>;
     } else if (!isRevealed && isFlagged) {
       return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">🚩</span></button>;
     }
