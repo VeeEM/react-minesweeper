@@ -64,30 +64,6 @@ function Minesweeper(props) {
       }
     }
   }
-  
-
-  function renderButton(x, y, gameState) {
-    const current = new Coordinate(x, y);
-    const isMine = containsCoordinate(current, mines);
-    const isRevealed = containsCoordinate(current, revealed);
-    const isFlagged = containsCoordinate(current, flags);
-
-    if (isRevealed && !isMine) {
-      const cellNumber = adjacentIn(width, height, current, mines).length;
-      const numberClass = numberToClass(cellNumber);
-      return <button className={"cell-button " + numberClass + ' revealed'} onMouseUp={handleCellClick(x, y)}>{cellNumber > 0 ? cellNumber : ''}</button>;
-    } else if (isRevealed && isMine) {
-      return <button className="cell-button revealed-mine" onMouseUp={handleCellClick(x, y)}><span className="cell-span">💣</span></button>;
-    } else if (!isRevealed && isMine && gameState === GAME_LOSS) {
-      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">💣</span></button>;
-    } else if (!isRevealed && !isFlagged) {
-      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}>{" "}</button>;
-    } else if (isFlagged && !isMine && gameState === GAME_LOSS) {
-      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">❌</span></button>;
-    } else if (!isRevealed && isFlagged) {
-      return <button className="cell-button" onMouseUp={handleCellClick(x, y)}><span className="cell-span">🚩</span></button>;
-    }
-  }
 
   function checkGameOver() {
     for (const mine of mines) {
@@ -107,9 +83,21 @@ function Minesweeper(props) {
     const cells = [];
     for (let x = 0; x < width; x++) {
       //cells.push(<button onClick={newCoordAlerter(x, y)}>{x}</button>);
-      cells.push(renderButton(x, y, gameState));
+      //cells.push(renderButton(x, y, gameState));
+      cells.push(
+      <CellButton
+	key={"" + x + y}
+        current={new Coordinate(x, y)}
+	mines={mines}
+	revealed={revealed}
+	flags={flags}
+	width={width}
+	height={height}
+	gameState={gameState}
+	onMouseUp={handleCellClick(x, y)} />
+      );
     }
-    rows.push(<div className="row">{cells}</div>);
+    rows.push(<div key={y} className="row">{cells}</div>);
   }
 
   return (
@@ -137,6 +125,36 @@ function Timer(props) {
   return (
     <span className="header-span timer">{props.secondsElapsed}</span>
   );
+}
+
+function CellButton(props) {
+  const mines = props.mines;
+  const revealed = props.revealed;
+  const flags = props.flags;
+  const current = props.current;
+  const width = props.width;
+  const height = props.height;
+  const gameState = props.gameState;
+
+  const isMine = containsCoordinate(current, mines);
+  const isRevealed = containsCoordinate(current, revealed);
+  const isFlagged = containsCoordinate(current, flags);
+
+  if (isRevealed && !isMine) {
+    const cellNumber = adjacentIn(width, height, current, mines).length;
+    const numberClass = numberToClass(cellNumber);
+    return <button key={"" + current.x + current.y} className={"cell-button " + numberClass + ' revealed'} onMouseUp={props.onMouseUp}>{cellNumber > 0 ? cellNumber : ''}</button>;
+  } else if (isRevealed && isMine) {
+    return <button key={"" + current.x + current.y} className="cell-button revealed-mine" onMouseUp={props.onMouseUp}><span className="cell-span">💣</span></button>;
+  } else if (!isRevealed && isMine && gameState === GAME_LOSS) {
+    return <button key={"" + current.x + current.y} className="cell-button" onMouseUp={props.onMouseUp}><span className="cell-span">💣</span></button>;
+  } else if (!isRevealed && !isFlagged) {
+    return <button key={"" + current.x + current.y} className="cell-button" onMouseUp={props.onMouseUp}>{" "}</button>;
+  } else if (isFlagged && !isMine && gameState === GAME_LOSS) {
+    return <button key={"" + current.x + current.y} className="cell-button" onMouseUp={props.onMouseUp}><span className="cell-span">❌</span></button>;
+  } else if (!isRevealed && isFlagged) {
+    return <button key={"" + current.x + current.y} className="cell-button" onMouseUp={props.onMouseUp}><span className="cell-span">🚩</span></button>;
+  }
 }
 
 function ResetButton(props) {
