@@ -93,3 +93,8 @@
     font-weight: bold;
     color: grey;
 }
+
+#root {
+    display: flex;
+    justify-content: center;
+}
