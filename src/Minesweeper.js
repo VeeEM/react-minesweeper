@@ -32,7 +32,6 @@ function Minesweeper(props) {
       if (checkGameOver() !== GAME_ONGOING) {
 	return;
       }
-      console.log(e);
       const current = new Coordinate(x, y);
       if (e.button === 0) {
 	// Generate mines and then reveal if first click
@@ -53,12 +52,9 @@ function Minesweeper(props) {
 	const newRevealed = inclusiveReveal(width, height, current, flags, mines, revealed);
 	setRevealed(newRevealed);
       } else if (e.button === 1) {
-	console.log("Middle click");
 	const newRevealed = chord(width, height, current, flags, mines, revealed);
-	console.log("newrev", newRevealed);
 	setRevealed(newRevealed);
       } else if (e.button === 2) {
-	console.log("Right click");
 	const newFlags = flag(current, flags, revealed);
 	setFlags(newFlags);
       }
@@ -82,8 +78,6 @@ function Minesweeper(props) {
   for (let y = 0; y < height; y++) {
     const cells = [];
     for (let x = 0; x < width; x++) {
-      //cells.push(<button onClick={newCoordAlerter(x, y)}>{x}</button>);
-      //cells.push(renderButton(x, y, gameState));
       cells.push(
       <CellButton
 	key={"" + x + y}
